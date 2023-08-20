@@ -6,6 +6,17 @@ using namespace std;
 class OurArray
 {
 public:
+
+
+
+
+
+
+
+
+
+
+
   // Resizes the given array to the new size
   template <typename T>
   void Resize(T *&source, int newSize)
