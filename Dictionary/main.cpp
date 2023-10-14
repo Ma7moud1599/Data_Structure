@@ -1,6 +1,4 @@
 #include "Dictionary.cpp"
-// #include "Hash.cpp"
-// #include "HashTable.cpp"
 #include <iostream>
 using namespace std;
 int main() {
