@@ -12,6 +12,11 @@ int main() {
   tree_char.Insert('G');
   tree_char.Insert('H');
   tree_char.Insert('I');
+  
+  std::cout << "Height: " << tree_char.Height() << std::endl;
+  tree_char.PreOrder();
+  tree_char.InOrder();
+  tree_char.PostOrder();
 
   return 0;
 }

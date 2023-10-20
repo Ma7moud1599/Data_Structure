@@ -21,6 +21,7 @@ private:
   TreeNode<Tdata> *root;
   
 public:
+  // Constructor and Destructor
   BinaryTree() { root = nullptr; }
   ~BinaryTree() { delete root; }
 
@@ -49,5 +50,51 @@ public:
         q.push(currentNode->Right);
       }
     }
+  }
+
+  int Height() { return internalHeight(this->root); }
+  int internalHeight(TreeNode<Tdata> *node) {
+    if (node == nullptr)
+      return 0;
+    return 1 + max(internalHeight(node->Left), internalHeight(node->Right));
+  }
+  
+  void PreOrder() {
+    internalPreOrder(root);
+    cout << endl;
+  }
+
+  void internalPreOrder(TreeNode<Tdata> *node) {
+    if (node == nullptr)
+      return;
+    cout << node->Data << " -> ";
+    internalPreOrder(node->Left);
+    internalPreOrder(node->Right);
+  }
+
+  void InOrder() {
+    internalInOrder(root);
+    cout << endl;
+  }
+
+  void internalInOrder(TreeNode<Tdata> *node) {
+    if (node == nullptr)
+      return;
+    internalInOrder(node->Left);
+    cout << node->Data << " -> ";
+    internalInOrder(node->Right);
+  }
+
+  void PostOrder() {
+    internalPostOrder(root);
+    cout << endl;
+  }
+
+  void internalPostOrder(TreeNode<Tdata> *node) {
+    if (node == nullptr)
+      return;
+    internalPostOrder(node->Left);
+    internalPostOrder(node->Right);
+    cout << node->Data << " -> ";
   }
 };
