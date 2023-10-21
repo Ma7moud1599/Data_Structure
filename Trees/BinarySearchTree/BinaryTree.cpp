@@ -75,6 +75,63 @@ public:
     return nullptr;
   }
   
+  void BsDelete(Tdata _data) {
+    NodeAndParent<Tdata> *nodeAndParentInfo = FindNodeAndParent(_data);
+    if (nodeAndParentInfo->Node == nullptr)
+      return;
+
+    if (nodeAndParentInfo->Node->Left != nullptr &&
+        nodeAndParentInfo->Node->Right != nullptr) {
+      BSDelete_Has_Childs(nodeAndParentInfo->Node);
+    } else if (nodeAndParentInfo->Node->Left != nullptr ^
+               nodeAndParentInfo->Node->Right != nullptr) {
+      BSDelete_Has_One_Child(nodeAndParentInfo->Node);
+    } else {
+      BSDelete_leaf(nodeAndParentInfo);
+    }
+  }
+
+  void BSDelete_leaf(NodeAndParent<Tdata> *nodeAndParentInfo) {
+    if (nodeAndParentInfo->Parent == nullptr) {
+      this->root = nullptr;
+    } else {
+      if (nodeAndParentInfo->isLeft) {
+        nodeAndParentInfo->Parent->Left = nullptr;
+      } else {
+        nodeAndParentInfo->Parent->Right = nullptr;
+      }
+    }
+  }
+
+  void BSDelete_Has_One_Child(TreeNode<Tdata> *nodeToDelete) {
+    TreeNode<Tdata> *nodeToReplace = nullptr;
+    if (nodeToDelete->Left != nullptr) {
+      nodeToReplace = nodeToDelete->Left;
+    } else {
+      nodeToReplace = nodeToDelete->Right;
+    }
+    nodeToDelete->Data = nodeToReplace->Data;
+    nodeToDelete->Left = nodeToReplace->Left;
+    nodeToDelete->Right = nodeToReplace->Right;
+    delete nodeToReplace;
+  }
+
+  void BSDelete_Has_Childs(TreeNode<Tdata> *nodeToDelete) {
+    TreeNode<Tdata> *currentNode = nodeToDelete->Right;
+    TreeNode<Tdata> *parent = nullptr;
+    while (currentNode->Left != nullptr) {
+      parent = currentNode;
+      currentNode = currentNode->Left;
+    }
+    if (parent != nullptr) {
+      parent->Left = currentNode->Right;
+    } else {
+      nodeToDelete->Right = currentNode->Right;
+    }
+    nodeToDelete->Data = currentNode->Data;
+    delete currentNode;
+  }
+  
   void BSInsert(Tdata data) {
     TreeNode<Tdata> *new_node = new TreeNode<Tdata>(data);
     if (this->root == nullptr) {
