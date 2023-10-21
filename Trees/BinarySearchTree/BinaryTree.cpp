@@ -33,6 +33,29 @@ public:
   BinaryTree() { root = nullptr; }
   ~BinaryTree() { delete root; }
   
+  void Balance() {
+    vector<Tdata> nodes;
+    InOrderToArray(this->root, nodes);
+    this->root = RecursiveBalance(0, nodes.size() - 1, nodes);
+  }
+
+  void InOrderToArray(TreeNode<Tdata> *node, vector<Tdata> &nodes) {
+    if (node == nullptr)
+      return;
+    InOrderToArray(node->Left, nodes);
+    nodes.push_back(node->Data);
+    InOrderToArray(node->Right, nodes);
+  }
+
+  TreeNode<Tdata> *RecursiveBalance(int start, int end, vector<Tdata> &nodes) {
+    if (start > end)
+      return nullptr;
+    int mid = (start + end) / 2;
+    TreeNode<Tdata> *newNode = new TreeNode(nodes[mid]);
+    newNode->Left = RecursiveBalance(start, mid - 1, nodes);
+    newNode->Right = RecursiveBalance(mid + 1, end, nodes);
+    return newNode;
+  }
   
   bool IsExist(Tdata data) { return BSFind(data) != nullptr; }
 
