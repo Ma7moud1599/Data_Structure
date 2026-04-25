@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install g++
+        run: sudo apt-get install -y g++
+
+      - name: Build all C++ files
+        run: |
+          find . -name "main.cpp" | while read f; do
+            dir=$(dirname "$f")
+            echo "Building $f..."
+            g++ -std=c++17 -Wall -o "$dir/build_check" "$f" $(find "$dir" -name "*.cpp" ! -name "main.cpp" 2>/dev/null | tr '\n' ' ') && echo "✓ $f" || echo "✗ $f"
+          done
